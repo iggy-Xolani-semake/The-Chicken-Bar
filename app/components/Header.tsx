@@ -16,25 +16,28 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-30 bg-char-black/95 backdrop-blur-sm border-b border-bone/10 px-6">
-      {/* Locked container to exactly 56px high (h-14) */}
-      <div className="max-w-6xl mx-auto h-14 flex items-center justify-between">
+    /* overflow-visible allows the logo to bleed outside the header boundaries */
+    <header className="sticky top-0 z-30 bg-char-black/95 backdrop-blur-sm border-b border-bone/10 px-6 overflow-visible">
+      <div className="max-w-6xl mx-auto h-14 flex items-center justify-between relative">
         <Link 
           href="/" 
-          className="flex items-center shrink-0 focus-visible:outline focus-visible:outline-3 focus-visible:outline-char"
+          className="relative z-10 flex items-center shrink-0 focus-visible:outline focus-visible:outline-3 focus-visible:outline-char"
         >
-          <Image
-            src="/logo/tcb-logo-white.png"
-            alt="The Chicken Bar — home"
-            width={412}
-            height={100}
-            priority
-            style={{ width: "auto", height: "32px" }} /* Prevents Next.js image inline height override */
-            className="h-8 w-auto object-contain"
-          />
+          {/* Absolute positioning lets the logo grow large and float downward into the hero section */}
+          <div className="absolute top-1/2 -translate-y-1/2 left-0 w-36 md:w-44 h-auto drop-shadow-md">
+            <Image
+              src="/logo/tcb-logo-white.png"
+              alt="The Chicken Bar — home"
+              width={412}
+              height={100}
+              priority
+              className="w-full h-auto object-contain"
+            />
+          </div>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6">
+        {/* Added ml-auto/pl-40 to give room for the floating logo on desktop */}
+        <nav className="hidden md:flex items-center gap-6 ml-auto">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
