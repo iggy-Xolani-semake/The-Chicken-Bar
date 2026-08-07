@@ -59,13 +59,38 @@ export default function MajitaMenuPage() {
             categories?.map((cat) => {
               const items = itemsByCategory[cat.id] ?? [];
               if (items.length === 0) return null;
+
+              // Real photo, if one exists for this category — pulled from
+              // whichever item in the category already has a real
+              // image_url set in the database, rather than a hardcoded
+              // filename guess. No fake/generic photo shown if none
+              // exists yet; the grid just runs full-width, same as
+              // before. Once real mogodu/trotter/liver photos get linked
+              // via the admin panel, this fills in on its own.
+              const categoryPhoto = items.find((i) => i.image_url)?.image_url;
+
               return (
                 <section key={cat.id} className="mb-14">
-                  <h2 className="font-display text-bone text-3xl mb-6">{cat.name}</h2>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {items.map((item) => (
-                      <MenuItemCard key={item.id} item={item} />
-                    ))}
+                  <div className={`flex flex-col ${categoryPhoto ? "md:flex-row md:gap-8" : ""} items-start`}>
+                    <div className={categoryPhoto ? "md:w-2/3" : "w-full"}>
+                      <h2 className="font-display text-bone text-3xl mb-6">{cat.name}</h2>
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        {items.map((item) => (
+                          <MenuItemCard key={item.id} item={item} />
+                        ))}
+                      </div>
+                    </div>
+
+                    {categoryPhoto && (
+                      <div className="hidden md:block md:w-1/3 shrink-0 pt-14">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={categoryPhoto}
+                          alt={cat.name}
+                          className="w-full h-64 object-cover rounded-sm shadow-lg"
+                        />
+                      </div>
+                    )}
                   </div>
                 </section>
               );

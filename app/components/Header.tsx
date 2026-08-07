@@ -16,7 +16,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-30 bg-char-black/95 backdrop-blur-sm border-b border-bone/10 px-6 py-4">
+    <header className="sticky top-0 z-30 bg-char-black/95 backdrop-blur-sm border-b border-bone/10 px-6 py-2">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
         <Link href="/" className="flex items-center focus-visible:outline focus-visible:outline-3 focus-visible:outline-char">
           <Image
@@ -25,7 +25,7 @@ export default function Header() {
             width={412}
             height={182}
             priority
-            className="h-16 w-auto"
+            className="h-24 w-auto"
           />
         </Link>
 

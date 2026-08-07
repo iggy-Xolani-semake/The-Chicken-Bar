@@ -83,10 +83,13 @@ body {
   background-blend-mode: multiply;
 }
 
-/* Majita Monday — grayed-out, near-black, matches the moodier reference
-   poster tone specifically requested for this section. */
+/* Majita Monday — dark, moody brown. Was near-black (#1a1a1a), which
+   crushed the wood grain to invisible under multiply blend — real
+   feedback confirmed you genuinely could not see any woodwork.
+   Lightened to a real dark brown that stays moodier than the main
+   hero tone but actually shows texture. */
 .texture-wood-majita {
-  background-color: #1a1a1a;
+  background-color: #3d2818;
   background-blend-mode: multiply;
 }
 
