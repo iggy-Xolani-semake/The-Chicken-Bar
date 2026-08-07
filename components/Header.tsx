@@ -23,7 +23,7 @@ export default function Header() {
             src="/logo/tcb-logo-white.png"
             alt="The Chicken Bar — home"
             width={412}
-            height={182}
+            height={100}
             priority
             className="h-16 w-auto"
           />
