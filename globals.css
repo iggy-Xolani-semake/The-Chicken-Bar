@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+:root {
+  /* ---- Vintage flame-grill palette v2 — warmer, burnt tones per direct feedback
+     that the original was too flat/safe. Moved from a clean red/amber toward
+     deeper rust and char tones — references old braai-stand signage and
+     seasoned steel rather than a clean modern "brand red." ----
+     char-black: warm-black (not neutral) — has a hair of brown in it, reads
+                 as "seasoned steel" rather than pure digital black
+     rust:       the new primary accent — deep burnt orange-red, replaces the
+                 flatter --flame. This is the color of coals, not a logo swatch.
+     ember:      brighter orange-amber, used for hot highlights/CTAs sparingly
+     brass:      aged gold, replaces --char — warmer and less "traffic sign"
+     bone:       kept, still the warm off-white for text-on-dark
+     steel:      new — cool grey-blue undertone for the diamond-plate texture
+                 itself, deliberately desaturated so it reads as metal, not
+                 as a competing brand color */
+  --color-char-black: #171310;
+  --color-rust: #c1441e;
+  --color-ember: #e8791f;
+  --color-brass: #d1a141;
+  --color-bone: #f5efe3;
+  --color-smoke: #241d17;
+  --color-smoke-light: #2f261e;
+  --color-steel: #3a3530;
+
+  --background: var(--color-char-black);
+  --foreground: var(--color-bone);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-ink: var(--color-char-black);
+  --color-flame: var(--color-rust);
+  --color-char: var(--color-brass);
+  --color-bone: var(--color-bone);
+  --color-smoke: var(--color-smoke);
+  --color-smoke-light: var(--color-smoke-light);
+  --color-ember: var(--color-ember);
+  --color-steel: var(--color-steel);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-utility: var(--font-utility);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), sans-serif;
+}
+
+/* ---- Wood background system ----
+   One base texture (public/textures/wood-base.jpg, confirmed licensed),
+   recolored per section via background-blend-mode rather than five
+   separate wood photos. This is what gives "one wood background for
+   consistency, but it changes with the sections" — same grain every
+   time, different mood per section through the overlay color/opacity.
+   background-blend-mode: multiply darkens the wood under each tint,
+   keeping the grain visible rather than fully obscuring it with a flat
+   color wash. */
+
+.texture-wood {
+  background-image: url('/textures/wood-base.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Main hero — natural brown, closest to the source wood's real color.
+   Lightest tint of the set since this is the first-impression section
+   and shouldn't feel muddy. */
+.texture-wood-hero {
+  background-color: #5a3a22;
+  background-blend-mode: multiply;
+}
+
+/* Upcoming Events — warmer, more amber/rust tint, ties to the site's
+   ember accent color without going as dark as Majita. */
+.texture-wood-events {
+  background-color: #7a3f1f;
+  background-blend-mode: multiply;
+}
+
+/* Majita Monday — dark, moody brown. Was near-black (#1a1a1a), which
+   crushed the wood grain to invisible under multiply blend — real
+   feedback confirmed you genuinely could not see any woodwork.
+   Lightened to a real dark brown that stays moodier than the main
+   hero tone but actually shows texture. */
+.texture-wood-majita {
+  background-color: #3d2818;
+  background-blend-mode: multiply;
+}
+
+/* Gallery — distinct cooler/darker brown, separates it from hero and
+   events while staying in the same wood family. */
+.texture-wood-gallery {
+  background-color: #3a2818;
+  background-blend-mode: multiply;
+}
+
+/* Dark overlay gradient — layered on top of any texture-wood-* variant
+   to keep foreground text legible against the busy grain, same
+   legibility principle as the original diamond-plate treatment. */
+.texture-wood-overlay {
+  position: relative;
+}
+.texture-wood-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10,8,6,0.55) 0%, rgba(10,8,6,0.75) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+.texture-wood-overlay > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Shine sweep — hover-triggered only, not infinite. A CTA that never stops
+   moving competes with itself for attention; this fires once per hover,
+   which reads as responsive polish instead of anxious animation. */
+.shine-on-hover {
+  position: relative;
+  overflow: hidden;
+}
+.shine-on-hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(-75deg, transparent 40%, rgba(255,255,255,0.35) 50%, transparent 60%);
+  background-size: 250% 100%;
+  background-position: 150% 0;
+  pointer-events: none;
+}
+.shine-on-hover:hover::after {
+  transition: background-position 0.6s ease;
+  background-position: -50% 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
