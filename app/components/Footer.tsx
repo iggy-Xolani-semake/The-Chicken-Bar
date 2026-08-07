@@ -7,7 +7,7 @@ export default function Footer() {
           <p className="font-body text-bone/60 text-sm">
             Best kasi flame-grilled chicken &amp; meat. Est. 2019, Tsakane.
           </p>
-          <p className="font-body text-bone/40 text-xs mt-3">
+          <p className="font-body text-bone/70 text-base font-semibold mt-3">
             Ask us about our car wash service while you wait.
           </p>
         </div>

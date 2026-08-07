@@ -3,9 +3,9 @@ export default function Location() {
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 
   return (
-    <section className="bg-smoke-light px-6 md:px-12 py-20 md:py-28">
+    <section className="texture-wood texture-wood-gallery texture-wood-overlay px-6 md:px-12 py-12 md:py-16">
       <div className="max-w-2xl mx-auto text-center">
-        <h2 className="font-display text-bone text-5xl md:text-6xl mb-6">Find Us</h2>
+        <h2 className="font-display text-bone text-4xl md:text-5xl mb-6">Find Us</h2>
         <p className="font-body text-bone/80 text-lg mb-2">114 Bhala Street</p>
         <p className="font-body text-bone/80 text-lg mb-8">Tsakane (ECentre), Gauteng</p>
         <a
