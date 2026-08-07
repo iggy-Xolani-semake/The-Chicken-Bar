@@ -34,7 +34,7 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="font-body text-sm text-bone/70 hover:text-char"
+              className="font-body text-base text-bone/70 hover:text-char"
             >
               {link.label}
             </Link>
