@@ -5,6 +5,11 @@ import Image from "next/image";
 import { getMenuItems } from "@/lib/supabase/queries";
 import type { MenuCategory, MenuItem } from "@/lib/supabase/types";
 import MenuItemCard from "@/app/components/MenuItemCard";
+import {
+  isMajitaMondayOrderingOpen,
+  getMajitaMondayClosedMessage,
+  DEFAULT_ORDER_HOURS,
+} from "@/lib/orderHours";
 
 export default function MajitaMenuPage() {
   const [categories, setCategories] = useState<MenuCategory[] | null>(null);
@@ -19,6 +24,13 @@ export default function MajitaMenuPage() {
       })
       .catch((err: Error) => setError(err.message));
   }, []);
+
+  // Menu always stays visible/browsable per brief — this banner is
+  // informational only, doesn't hide or disable anything below it.
+  // Actual submission blocking happens at checkout (CheckoutForm.tsx),
+  // since that's the one place that knows the full cart.
+  const majitaOrderingOpen = isMajitaMondayOrderingOpen(new Date(), DEFAULT_ORDER_HOURS);
+  const majitaClosedMessage = getMajitaMondayClosedMessage(DEFAULT_ORDER_HOURS);
 
   return (
     <main>
@@ -44,6 +56,18 @@ export default function MajitaMenuPage() {
             Majita Monday isn&apos;t a scheduled event — it&apos;s people
             coming together informally to share a meal and conversation.
           </p>
+
+          {!majitaOrderingOpen && (
+            <div
+              role="alert"
+              className="mt-6 bg-ember/10 border border-ember/40 rounded-sm p-4 text-center max-w-lg mx-auto"
+            >
+              <p className="font-body font-bold text-ember uppercase tracking-wide text-sm">
+                Orders open Monday
+              </p>
+              <p className="font-body text-bone/70 text-sm mt-1">{majitaClosedMessage}</p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -76,7 +100,7 @@ export default function MajitaMenuPage() {
                       <h2 className="font-display text-bone text-3xl mb-6">{cat.name}</h2>
                       <div className="grid sm:grid-cols-2 gap-4">
                         {items.map((item) => (
-                          <MenuItemCard key={item.id} item={item} />
+                          <MenuItemCard key={item.id} item={item} menuType="majita_monday" />
                         ))}
                       </div>
                     </div>

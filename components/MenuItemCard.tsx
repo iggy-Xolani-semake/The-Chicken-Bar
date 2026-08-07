@@ -6,7 +6,13 @@ import { useCart } from "@/lib/cart/CartContext";
 import type { ResolvedComboChoice, ResolvedAddon } from "@/lib/cart/cartLogic";
 import ComboSelector from "./ComboSelector";
 
-export default function MenuItemCard({ item }: { item: MenuItem }) {
+export default function MenuItemCard({
+  item,
+  menuType,
+}: {
+  item: MenuItem;
+  menuType: "main" | "majita_monday";
+}) {
   const { dispatch } = useCart();
   const [selected, setSelected] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -49,6 +55,7 @@ export default function MenuItemCard({ item }: { item: MenuItem }) {
       type: "ADD_ITEM",
       payload: {
         menuItemId: item.id,
+        menuType,
         name: item.name,
         unitPrice: item.price,
         quantity,
@@ -67,6 +74,7 @@ export default function MenuItemCard({ item }: { item: MenuItem }) {
       type: "ADD_ITEM",
       payload: {
         menuItemId: item.id,
+        menuType,
         name: item.name,
         unitPrice: item.price,
         quantity: 1,

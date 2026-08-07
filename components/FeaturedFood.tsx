@@ -64,7 +64,7 @@ export default function FeaturedFood() {
         {!error && items !== null && items.length > 0 && (
           <div className="grid md:grid-cols-3 gap-6">
             {items.map((item) => (
-              <MenuItemCard key={item.id} item={item} />
+              <MenuItemCard key={item.id} item={item} menuType={item.menu_type ?? "main"} />
             ))}
           </div>
         )}
