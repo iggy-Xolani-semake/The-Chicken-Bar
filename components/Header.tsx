@@ -8,7 +8,7 @@ const NAV_LINKS = [
   { href: "/menu", label: "Menu" },
   { href: "/majita-monday", label: "Majita Monday" },
   { href: "/#upcoming-events", label: "Events" },
-  // Gallery link disabled while the section is hidden — see app/page.tsx
+  { href: "/#gallery", label: "Gallery" },
   { href: "/book-a-stall", label: "Book a Stall" },
 ];
 
@@ -16,7 +16,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-30 bg-char-black/95 backdrop-blur-sm border-b border-bone/10 px-6 py-2">
+    <header className="sticky top-0 z-30 bg-char-black/95 backdrop-blur-sm border-b border-bone/10 px-6 py-0">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
         <Link href="/" className="flex items-center focus-visible:outline focus-visible:outline-3 focus-visible:outline-char">
           <Image
@@ -25,7 +25,7 @@ export default function Header() {
             width={412}
             height={182}
             priority
-            className="h-32 w-auto"
+            className="h-56 w-auto"
           />
         </Link>
 
@@ -34,7 +34,7 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="font-body text-base text-bone/70 hover:text-char"
+              className="font-body text-sm text-bone/70 hover:text-char"
             >
               {link.label}
             </Link>

@@ -4,13 +4,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { useCart } from "@/lib/cart/CartContext";
 import { lineItemTotal } from "@/lib/cart/cartLogic";
-import {
-  isOrderingOpen,
-  getOrderingClosedMessage,
-  isMajitaMondayOrderingOpen,
-  getMajitaMondayClosedMessage,
-  DEFAULT_ORDER_HOURS,
-} from "@/lib/orderHours";
+import { isOrderingOpen, getOrderingClosedMessage, DEFAULT_ORDER_HOURS } from "@/lib/orderHours";
 
 export interface CheckoutData {
   customerName: string;
@@ -69,17 +63,6 @@ export default function CheckoutForm({ onSubmit, submitting }: CheckoutFormProps
   const orderingOpen = isOrderingOpen(now, DEFAULT_ORDER_HOURS);
   const closedMessage = getOrderingClosedMessage(now, DEFAULT_ORDER_HOURS);
 
-  // Majita Monday items are only orderable Mondays within order hours —
-  // browsing/adding to cart stays open every day (per brief), this only
-  // blocks submission, and only for the specific lines that need it.
-  // A cart can legally mix regular-menu and Majita Monday lines, so this
-  // is checked separately from the general orderingOpen gate above
-  // rather than closing the whole cart over one Majita Monday item.
-  const majitaLines = lines.filter((l) => l.menuType === "majita_monday");
-  const hasMajitaItems = majitaLines.length > 0;
-  const majitaOrderingOpen = isMajitaMondayOrderingOpen(now, DEFAULT_ORDER_HOURS);
-  const majitaClosedMessage = getMajitaMondayClosedMessage(DEFAULT_ORDER_HOURS);
-
   // Validation — per brief: name required, phone required, at least one
   // item, delivery address required if delivery selected. Computed on
   // every render rather than only on submit, so the submit button's
@@ -93,8 +76,7 @@ export default function CheckoutForm({ onSubmit, submitting }: CheckoutFormProps
   }
 
   const hasErrors = Object.keys(errors).length > 0;
-  const canSubmit =
-    !hasErrors && orderingOpen && !submitting && !(hasMajitaItems && !majitaOrderingOpen);
+  const canSubmit = !hasErrors && orderingOpen && !submitting;
 
   function update<K extends keyof CheckoutData>(key: K, value: CheckoutData[K]) {
     setData((prev) => ({ ...prev, [key]: value }));
@@ -123,22 +105,6 @@ export default function CheckoutForm({ onSubmit, submitting }: CheckoutFormProps
           <p className="font-body text-bone/50 text-xs mt-2">
             You can still browse the menu and build your order below — you just
             won&apos;t be able to submit it until we&apos;re open.
-          </p>
-        </div>
-      )}
-
-      {orderingOpen && hasMajitaItems && !majitaOrderingOpen && (
-        <div
-          role="alert"
-          className="bg-ember/10 border border-ember/40 rounded-sm p-4 text-center"
-        >
-          <p className="font-body font-bold text-ember uppercase tracking-wide">
-            Majita Monday items aren&apos;t orderable right now
-          </p>
-          <p className="font-body text-bone/70 text-sm mt-1">{majitaClosedMessage}</p>
-          <p className="font-body text-bone/50 text-xs mt-2">
-            They&apos;re still in your cart — remove them to check out the rest of
-            your order now, or come back Monday.
           </p>
         </div>
       )}

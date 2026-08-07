@@ -54,7 +54,7 @@ export default function FullMenuPage() {
                     <h2 className="font-display text-flame text-3xl mb-6">{cat.name}</h2>
                     <div className="grid sm:grid-cols-2 gap-4">
                       {items.map((item) => (
-                        <MenuItemCard key={item.id} item={item} menuType="main" />
+                        <MenuItemCard key={item.id} item={item} />
                       ))}
                     </div>
                   </div>
