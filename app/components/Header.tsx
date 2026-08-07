@@ -16,33 +16,32 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    /* overflow-visible allows the logo to bleed outside the header boundaries */
     <header className="sticky top-0 z-30 bg-char-black/95 backdrop-blur-sm border-b border-bone/10 px-6 overflow-visible">
       <div className="max-w-6xl mx-auto h-14 flex items-center justify-between relative">
         <Link 
           href="/" 
-          className="relative z-10 flex items-center shrink-0 focus-visible:outline focus-visible:outline-3 focus-visible:outline-char"
+          className="relative z-20 flex items-center shrink-0 focus-visible:outline focus-visible:outline-3 focus-visible:outline-char"
         >
-          {/* Absolute positioning lets the logo grow large and float downward into the hero section */}
-          <div className="absolute top-1/2 -translate-y-1/2 left-0 w-36 md:w-44 h-auto drop-shadow-md">
+          {/* 2.5x Size Increase Container: w-64 on mobile, w-[280px] on desktop */}
+          <div className="absolute top-1/2 -translate-y-1/2 left-0 w-64 md:w-[280px] h-auto drop-shadow-xl pt-3">
             <Image
               src="/logo/tcb-logo-white.png"
               alt="The Chicken Bar — home"
               width={412}
               height={100}
               priority
-              className="w-full h-auto object-contain"
+              className="w-full h-auto object-contain filter drop-shadow-lg"
             />
           </div>
         </Link>
 
-        {/* Added ml-auto/pl-40 to give room for the floating logo on desktop */}
-        <nav className="hidden md:flex items-center gap-6 ml-auto">
+        {/* Navigation links pushed right to prevent overlapping with the large logo */}
+        <nav className="hidden md:flex items-center gap-6 ml-auto pl-64">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="font-body text-sm text-bone/70 hover:text-char transition-colors"
+              className="font-body text-sm text-bone/70 hover:text-char transition-colors whitespace-nowrap"
             >
               {link.label}
             </Link>
@@ -51,7 +50,7 @@ export default function Header() {
             href="https://wa.me/27658012302"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-body font-semibold text-xs uppercase tracking-wide bg-flame text-bone px-3 py-1.5 rounded-sm hover:bg-ember transition-colors focus-visible:outline focus-visible:outline-3 focus-visible:outline-char"
+            className="font-body font-semibold text-xs uppercase tracking-wide bg-flame text-bone px-3 py-1.5 rounded-sm hover:bg-ember transition-colors whitespace-nowrap focus-visible:outline focus-visible:outline-3 focus-visible:outline-char"
           >
             Contact Us
           </a>
@@ -63,7 +62,7 @@ export default function Header() {
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
           aria-expanded={menuOpen}
-          className="md:hidden text-bone text-xl focus-visible:outline focus-visible:outline-3 focus-visible:outline-char"
+          className="md:hidden text-bone text-xl focus-visible:outline focus-visible:outline-3 focus-visible:outline-char relative z-30"
         >
           {menuOpen ? "✕" : "☰"}
         </button>
@@ -71,7 +70,7 @@ export default function Header() {
 
       {/* Mobile Menu Dropdown */}
       {menuOpen && (
-        <nav className="md:hidden max-w-6xl mx-auto py-3 flex flex-col gap-2 border-t border-bone/10">
+        <nav className="md:hidden max-w-6xl mx-auto py-3 flex flex-col gap-2 border-t border-bone/10 relative z-30 bg-char-black/95">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
