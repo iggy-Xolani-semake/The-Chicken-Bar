@@ -1,0 +1,351 @@
+@import "tailwindcss";
+
+:root {
+  /* ---- Vintage flame-grill palette v2 — warmer, burnt tones per direct feedback
+     that the original was too flat/safe. Moved from a clean red/amber toward
+     deeper rust and char tones — references old braai-stand signage and
+     seasoned steel rather than a clean modern "brand red." ----
+     char-black: warm-black (not neutral) — has a hair of brown in it, reads
+                 as "seasoned steel" rather than pure digital black
+     rust:       the new primary accent — deep burnt orange-red, replaces the
+                 flatter --flame. This is the color of coals, not a logo swatch.
+     ember:      brighter orange-amber, used for hot highlights/CTAs sparingly
+     brass:      aged gold, replaces --char — warmer and less "traffic sign"
+     bone:       kept, still the warm off-white for text-on-dark
+     steel:      new — cool grey-blue undertone for the diamond-plate texture
+                 itself, deliberately desaturated so it reads as metal, not
+                 as a competing brand color */
+  --color-char-black: #171310;
+  --color-rust: #c1441e;
+  --color-ember: #e8791f;
+  --color-brass: #d1a141;
+  --color-bone: #f5efe3;
+  --color-smoke: #241d17;
+  --color-smoke-light: #2f261e;
+  --color-steel: #3a3530;
+
+  --background: var(--color-char-black);
+  --foreground: var(--color-bone);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-ink: var(--color-char-black);
+  --color-flame: var(--color-rust);
+  --color-char: var(--color-brass);
+  --color-bone: var(--color-bone);
+  --color-smoke: var(--color-smoke);
+  --color-smoke-light: var(--color-smoke-light);
+  --color-ember: var(--color-ember);
+  --color-steel: var(--color-steel);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-utility: var(--font-utility);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), sans-serif;
+}
+
+/* ---- Wood background system ----
+   One base texture (public/textures/wood-base.jpg, confirmed licensed),
+   recolored per section via background-blend-mode rather than five
+   separate wood photos. This is what gives "one wood background for
+   consistency, but it changes with the sections" — same grain every
+   time, different mood per section through the overlay color/opacity.
+   background-blend-mode: multiply darkens the wood under each tint,
+   keeping the grain visible rather than fully obscuring it with a flat
+   color wash. */
+
+.texture-wood {
+  background-image: url('/textures/wood-base.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Main hero — natural brown, closest to the source wood's real color.
+   Lightest tint of the set since this is the first-impression section
+   and shouldn't feel muddy. */
+.texture-wood-hero {
+  background-color: #5a3a22;
+  background-blend-mode: multiply;
+}
+
+/* Upcoming Events — warmer, more amber/rust tint, ties to the site's
+   ember accent color without going as dark as Majita. */
+.texture-wood-events {
+  background-color: #7a3f1f;
+  background-blend-mode: multiply;
+}
+
+/* Majita Monday — dark, moody brown. Was near-black (#1a1a1a), which
+   crushed the wood grain to invisible under multiply blend — real
+   feedback confirmed you genuinely could not see any woodwork.
+   Lightened to a real dark brown that stays moodier than the main
+   hero tone but actually shows texture. */
+.texture-wood-majita {
+  background-color: #3d2818;
+  background-blend-mode: multiply;
+}
+
+/* Gallery — distinct cooler/darker brown, separates it from hero and
+   events while staying in the same wood family. */
+.texture-wood-gallery {
+  background-color: #3a2818;
+  background-blend-mode: multiply;
+}
+
+/* Today's Special — golden/flame-leaning tint, distinct from Majita's
+   near-black brown since this section isn't always Majita Monday (an
+   admin override can show main-menu picks here on any day) — a
+   Majita-dark tint would misleadingly imply "this is Majita Monday"
+   even when it isn't. */
+.texture-wood-todays-special {
+  background-color: #6b3d1a;
+  background-blend-mode: multiply;
+}
+
+/* Dark overlay gradient — layered on top of any texture-wood-* variant
+   to keep foreground text legible against the busy grain, same
+   legibility principle as the original diamond-plate treatment. */
+.texture-wood-overlay {
+  position: relative;
+}
+.texture-wood-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10,8,6,0.55) 0%, rgba(10,8,6,0.75) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+.texture-wood-overlay > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Shine sweep — hover-triggered only, not infinite. A CTA that never stops
+   moving competes with itself for attention; this fires once per hover,
+   which reads as responsive polish instead of anxious animation. */
+.shine-on-hover {
+  position: relative;
+  overflow: hidden;
+}
+.shine-on-hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(-75deg, transparent 40%, rgba(255,255,255,0.35) 50%, transparent 60%);
+  background-size: 250% 100%;
+  background-position: 150% 0;
+  pointer-events: none;
+}
+.shine-on-hover:hover::after {
+  transition: background-position 0.6s ease;
+  background-position: -50% 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---- Authentic Chicken Bar cinematic hero ----
+   All visible imagery is loaded directly from /public/logo and /public/food.
+   This is an interface animation, not generated or replacement artwork. */
+.chicken-cinematic-hero {
+  --hero-intro: 4.8s;
+  background-color: #21130d;
+  background-image:
+    linear-gradient(112deg, rgba(25, 13, 8, 0.94) 0%, rgba(29, 16, 8, 0.68) 50%, rgba(20, 11, 7, 0.82) 100%),
+    url('/textures/wood-base.jpg');
+  background-position: center;
+  background-size: cover;
+}
+.chicken-cinematic-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 71% 43%, rgba(232, 121, 31, 0.35), transparent 26%),
+    radial-gradient(circle at 50% 45%, transparent 44%, rgba(8, 5, 3, 0.54) 100%);
+}
+.chicken-hero-glow {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: min(92vw, 70rem);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(232, 121, 31, 0.2) 0%, rgba(232, 121, 31, 0.06) 32%, transparent 68%);
+  filter: blur(8px);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: chicken-hero-glow var(--hero-intro) ease-out both;
+}
+.chicken-hero-flame-edge {
+  position: absolute;
+  z-index: 25;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 1.15rem;
+  background: var(--color-rust);
+  clip-path: polygon(0 0, 3% 100%, 7% 20%, 12% 100%, 18% 10%, 24% 100%, 30% 30%, 36% 100%, 42% 0, 48% 100%, 54% 15%, 60% 100%, 66% 5%, 72% 100%, 78% 25%, 84% 100%, 90% 0, 96% 100%, 100% 20%, 100% 0);
+}
+.chicken-hero-opening-logo {
+  position: absolute;
+  z-index: 8;
+  top: 50%;
+  left: 50%;
+  width: min(46rem, 78vw);
+  filter: drop-shadow(0 1.2rem 1.5rem rgba(0, 0, 0, 0.5));
+  transform: translate(-50%, -50%);
+  animation: chicken-opening-logo var(--hero-intro) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.chicken-hero-collage {
+  position: absolute;
+  z-index: 9;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.chicken-hero-card {
+  position: absolute;
+  width: clamp(8.75rem, 17vw, 17rem);
+  aspect-ratio: 1 / 1.03;
+  overflow: hidden;
+  border: 0.22rem solid rgba(245, 239, 227, 0.85);
+  background: var(--color-smoke);
+  box-shadow: 0 1.1rem 2.5rem rgba(0, 0, 0, 0.56);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.chicken-hero-card-1 { top: 13%; left: 10%; animation: chicken-card-1 var(--hero-intro) cubic-bezier(0.16, 1, 0.3, 1) both; }
+.chicken-hero-card-2 { top: 12%; right: 13%; animation: chicken-card-2 var(--hero-intro) cubic-bezier(0.16, 1, 0.3, 1) both; }
+.chicken-hero-card-3 { top: 48%; left: 4%; animation: chicken-card-3 var(--hero-intro) cubic-bezier(0.16, 1, 0.3, 1) both; }
+.chicken-hero-card-4 { right: 3%; bottom: 10%; animation: chicken-card-4 var(--hero-intro) cubic-bezier(0.16, 1, 0.3, 1) both; }
+.chicken-hero-card-5 { bottom: 3%; left: 23%; animation: chicken-card-5 var(--hero-intro) cubic-bezier(0.16, 1, 0.3, 1) both; }
+.chicken-hero-card-6 { top: 37%; left: 34%; animation: chicken-card-6 var(--hero-intro) cubic-bezier(0.16, 1, 0.3, 1) both; }
+.chicken-hero-food-frame {
+  position: absolute;
+  z-index: 12;
+  top: 50%;
+  right: clamp(1.5rem, 10vw, 11rem);
+  width: min(38vw, 31rem);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 0.42rem solid var(--color-bone);
+  border-radius: 999px;
+  box-shadow: 0 1.6rem 5rem rgba(0, 0, 0, 0.68);
+  opacity: 0;
+  transform: translateY(-50%) scale(0.66) rotate(-6deg);
+  animation: chicken-food-reveal var(--hero-intro) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.chicken-hero-food-ring {
+  position: absolute;
+  z-index: 1;
+  inset: 0.65rem;
+  border: 1px solid rgba(209, 161, 65, 0.9);
+  border-radius: inherit;
+  pointer-events: none;
+}
+.chicken-hero-copy {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  animation: chicken-copy-reveal var(--hero-intro) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes chicken-opening-logo {
+  0%, 10% { opacity: 0; transform: translate(-50%, -50%) scale(0.82); }
+  20%, 26% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  38% { opacity: 0; transform: translate(-50%, -54%) scale(1.16); filter: blur(2px) drop-shadow(0 1.2rem 1.5rem rgba(0, 0, 0, 0.5)); }
+  100% { opacity: 0; transform: translate(-50%, -54%) scale(1.16); }
+}
+@keyframes chicken-card-1 {
+  0%, 20% { opacity: 0; transform: translate(-24vw, -10vh) rotate(-22deg) scale(0.72); }
+  34%, 48% { opacity: 1; transform: translate(0, 0) rotate(-9deg) scale(1); }
+  68% { opacity: 0.65; transform: translate(26vw, 23vh) rotate(-2deg) scale(0.56); }
+  100% { opacity: 0; transform: translate(30vw, 27vh) rotate(0) scale(0.4); }
+}
+@keyframes chicken-card-2 {
+  0%, 20% { opacity: 0; transform: translate(25vw, -14vh) rotate(18deg) scale(0.68); }
+  34%, 48% { opacity: 1; transform: translate(0, 0) rotate(8deg) scale(1); }
+  68% { opacity: 0.65; transform: translate(-25vw, 24vh) rotate(1deg) scale(0.55); }
+  100% { opacity: 0; transform: translate(-30vw, 29vh) rotate(0) scale(0.4); }
+}
+@keyframes chicken-card-3 {
+  0%, 20% { opacity: 0; transform: translate(-21vw, 18vh) rotate(15deg) scale(0.72); }
+  36%, 50% { opacity: 1; transform: translate(0, 0) rotate(-5deg) scale(1); }
+  68% { opacity: 0.68; transform: translate(29vw, -7vh) rotate(-1deg) scale(0.55); }
+  100% { opacity: 0; transform: translate(34vw, -10vh) rotate(0) scale(0.4); }
+}
+@keyframes chicken-card-4 {
+  0%, 20% { opacity: 0; transform: translate(22vw, 18vh) rotate(-18deg) scale(0.7); }
+  36%, 50% { opacity: 1; transform: translate(0, 0) rotate(9deg) scale(1); }
+  68% { opacity: 0.68; transform: translate(-23vw, -23vh) rotate(1deg) scale(0.55); }
+  100% { opacity: 0; transform: translate(-29vw, -28vh) rotate(0) scale(0.4); }
+}
+@keyframes chicken-card-5 {
+  0%, 20% { opacity: 0; transform: translate(-8vw, 22vh) rotate(-12deg) scale(0.72); }
+  36%, 50% { opacity: 1; transform: translate(0, 0) rotate(5deg) scale(1); }
+  68% { opacity: 0.68; transform: translate(13vw, -28vh) rotate(1deg) scale(0.55); }
+  100% { opacity: 0; transform: translate(16vw, -33vh) rotate(0) scale(0.4); }
+}
+@keyframes chicken-card-6 {
+  0%, 22% { opacity: 0; transform: translate(5vw, 14vh) rotate(20deg) scale(0.56); }
+  38%, 52% { opacity: 1; transform: translate(0, 0) rotate(-4deg) scale(1); }
+  68% { opacity: 0.62; transform: translate(8vw, 0) rotate(0) scale(0.55); }
+  100% { opacity: 0; transform: translate(10vw, 0) rotate(0) scale(0.4); }
+}
+@keyframes chicken-food-reveal {
+  0%, 49% { opacity: 0; transform: translateY(-50%) scale(0.66) rotate(-6deg); }
+  69%, 100% { opacity: 1; transform: translateY(-50%) scale(1) rotate(0); }
+}
+@keyframes chicken-copy-reveal {
+  0%, 75% { opacity: 0; transform: translateY(1.5rem); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes chicken-hero-glow {
+  0%, 22% { opacity: 0; transform: translate(-50%, -50%) scale(0.55); }
+  54% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0.72; transform: translate(-50%, -50%) scale(1.12); }
+}
+
+@media (max-width: 767px) {
+  .chicken-hero-card { width: clamp(6.6rem, 34vw, 10.5rem); border-width: 0.16rem; }
+  .chicken-hero-card-1 { top: 12%; left: -5%; }
+  .chicken-hero-card-2 { top: 12%; right: -7%; }
+  .chicken-hero-card-3 { top: 32%; left: -12%; }
+  .chicken-hero-card-4 { right: -12%; bottom: 35%; }
+  .chicken-hero-card-5 { bottom: 28%; left: 4%; }
+  .chicken-hero-card-6 { top: 31%; left: 32%; }
+  .chicken-hero-food-frame {
+    top: 37%;
+    right: 50%;
+    width: min(70vw, 22rem);
+    transform: translate(50%, -50%) scale(0.66) rotate(-6deg);
+  }
+  @keyframes chicken-food-reveal {
+    0%, 49% { opacity: 0; transform: translate(50%, -50%) scale(0.66) rotate(-6deg); }
+    69%, 100% { opacity: 1; transform: translate(50%, -50%) scale(1) rotate(0); }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chicken-hero-opening-logo,
+  .chicken-hero-card,
+  .chicken-hero-glow { display: none; }
+  .chicken-hero-food-frame { opacity: 1; animation: none; }
+  .chicken-hero-copy { opacity: 1; transform: none; animation: none; }
+}
