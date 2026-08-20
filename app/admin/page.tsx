@@ -119,6 +119,12 @@ export default function AdminDashboard() {
         >
           Review Customer Feedback
         </Link>
+        <Link
+          href="/admin/notifications"
+          className="inline-flex min-h-11 items-center justify-center text-center font-body text-xs sm:text-sm bg-smoke-light border border-bone/20 text-bone px-3 sm:px-4 py-2 rounded-sm hover:border-bone/50"
+        >
+          Notification Health
+        </Link>
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ import AdminServiceWorker from "./components/AdminServiceWorker";
 const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/orders", label: "Orders" },
+  { href: "/admin/notifications", label: "Notification Health" },
   { href: "/admin/menu", label: "Menu" },
   { href: "/admin/events", label: "Events" },
   { href: "/admin/gallery", label: "Gallery" },
