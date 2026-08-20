@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase/client";
+import OrderNotificationControl from "./components/OrderNotificationControl";
 
 interface Stats {
   newOrders: number;
@@ -11,6 +12,7 @@ interface Stats {
   stallApplications: number;
   menuItems: number;
   outOfStock: number;
+  pendingReviews: number;
 }
 
 export default function AdminDashboard() {
@@ -21,7 +23,7 @@ export default function AdminDashboard() {
       const startOfDay = new Date();
       startOfDay.setHours(0, 0, 0, 0);
 
-      const [newOrders, todaysOrders, upcomingEvents, menuItems, outOfStock] = await Promise.all([
+      const [newOrders, todaysOrders, upcomingEvents, menuItems, outOfStock, pendingReviews] = await Promise.all([
         supabase.from("orders").select("id", { count: "exact", head: true }).eq("status", "new"),
         supabase
           .from("orders")
@@ -36,6 +38,7 @@ export default function AdminDashboard() {
           .from("menu_items")
           .select("id", { count: "exact", head: true })
           .eq("is_available", false),
+        supabase.from("customer_reviews").select("id", { count: "exact", head: true }).eq("status", "pending"),
       ]);
 
       setStats({
@@ -45,6 +48,7 @@ export default function AdminDashboard() {
         stallApplications: 0, // stall_bookings table not yet built
         menuItems: menuItems.count ?? 0,
         outOfStock: outOfStock.count ?? 0,
+        pendingReviews: pendingReviews.count ?? 0,
       });
     }
     load();
@@ -58,16 +62,18 @@ export default function AdminDashboard() {
         { label: "Stall Applications", value: stats.stallApplications, href: "/admin/stalls" },
         { label: "Menu Items", value: stats.menuItems, href: "/admin/menu" },
         { label: "Out of Stock", value: stats.outOfStock, href: "/admin/menu" },
+        { label: "Reviews Pending", value: stats.pendingReviews, href: "/admin/reviews" },
       ]
     : [];
 
   return (
     <div>
       <h1 className="font-display text-bone text-2xl sm:text-3xl mb-6 sm:mb-8">Dashboard</h1>
+      <OrderNotificationControl />
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 mb-8 sm:mb-10">
         {stats === null
-          ? [0, 1, 2, 3, 4, 5].map((i) => (
+          ? [0, 1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="bg-smoke-light rounded-sm h-20 sm:h-24 animate-pulse" />
             ))
           : cards.map((c) => (
@@ -106,6 +112,12 @@ export default function AdminDashboard() {
           className="inline-flex min-h-11 items-center justify-center text-center font-body text-xs sm:text-sm bg-smoke-light border border-bone/20 text-bone px-3 sm:px-4 py-2 rounded-sm hover:border-bone/50"
         >
           View Orders
+        </Link>
+        <Link
+          href="/admin/reviews"
+          className="inline-flex min-h-11 items-center justify-center text-center font-body text-xs sm:text-sm bg-smoke-light border border-bone/20 text-bone px-3 sm:px-4 py-2 rounded-sm hover:border-bone/50"
+        >
+          Review Customer Feedback
         </Link>
       </div>
     </div>

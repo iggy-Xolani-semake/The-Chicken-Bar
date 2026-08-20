@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { getCurrentAdminStatus, signOutAdmin } from "@/lib/supabase/adminAuth";
+import AdminServiceWorker from "./components/AdminServiceWorker";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard" },
@@ -11,6 +12,7 @@ const NAV_ITEMS = [
   { href: "/admin/menu", label: "Menu" },
   { href: "/admin/events", label: "Events" },
   { href: "/admin/gallery", label: "Gallery" },
+  { href: "/admin/reviews", label: "Customer Reviews" },
   { href: "/admin/stalls", label: "Stall Bookings" },
   { href: "/admin/settings", label: "Restaurant Settings" },
 ];
@@ -64,7 +66,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (!isAdmin) return null;
 
   return (
-    <div className="min-h-screen bg-smoke md:flex">
+    <>
+      <AdminServiceWorker />
+      <div className="min-h-screen bg-smoke md:flex">
       <header className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-bone/10 bg-smoke-light px-4 py-3 md:hidden">
         <button
           type="button"
@@ -148,9 +152,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </button>
       </aside>
 
-      <main className="min-w-0 flex-1 px-4 py-5 pb-10 sm:px-6 sm:py-7 md:p-8">
-        {children}
-      </main>
-    </div>
+        <main className="min-w-0 flex-1 px-4 py-5 pb-10 sm:px-6 sm:py-7 md:p-8">
+          {children}
+        </main>
+      </div>
+    </>
   );
 }

@@ -17,8 +17,8 @@ const ORDER_PATHS = [
   {
     title: "Majita Monday",
     detail: "Kasi favourites, food and proper vibes.",
-    image: "/food/fofo-special.jpg",
-    alt: "Chicken Bar Fofo Special meal",
+    image: "/food/majita-mogodu-pork.jpg",
+    alt: "Majita Monday mogodu and pork dishes",
     href: "/majita-monday",
   },
 ];
@@ -56,7 +56,7 @@ export default function OrderShortcut() {
                 alt={path.alt}
                 fill
                 sizes="(max-width: 639px) 100vw, 33vw"
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                className="object-contain transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-4">

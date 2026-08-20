@@ -1,0 +1,18 @@
+{
+  "name": "Chicken Bar Admin",
+  "short_name": "CB Admin",
+  "description": "Order and operations management for The Chicken Bar.",
+  "start_url": "/admin/",
+  "scope": "/admin/",
+  "display": "standalone",
+  "background_color": "#1d1b18",
+  "theme_color": "#d94821",
+  "icons": [
+    {
+      "src": "/logo/badge-final.png",
+      "sizes": "930x930",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
