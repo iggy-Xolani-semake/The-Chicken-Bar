@@ -15,6 +15,15 @@ interface EventRow {
   description: string | null;
 }
 
+async function fetchEvents(): Promise<EventRow[]> {
+  const { data } = await supabase
+    .from("events")
+    .select("id, name, event_date, entry_type, status, cover_image_url, description")
+    .order("event_date", { ascending: false });
+
+  return (data as EventRow[]) ?? [];
+}
+
 export default function AdminEventsPage() {
   const [events, setEvents] = useState<EventRow[] | null>(null);
   const [showForm, setShowForm] = useState(false);
@@ -31,16 +40,20 @@ export default function AdminEventsPage() {
   const [editingDescriptionText, setEditingDescriptionText] = useState("");
 
   const load = useCallback(async () => {
-    const { data } = await supabase
-      .from("events")
-      .select("id, name, event_date, entry_type, status, cover_image_url, description")
-      .order("event_date", { ascending: false });
-    setEvents((data as EventRow[]) ?? []);
+    setEvents(await fetchEvents());
   }, []);
 
   useEffect(() => {
-    load();
-  }, [load]);
+    let cancelled = false;
+
+    void fetchEvents().then((data) => {
+      if (!cancelled) setEvents(data);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   async function createEvent(e: React.FormEvent) {
     e.preventDefault();
@@ -55,20 +68,6 @@ export default function AdminEventsPage() {
     });
     setForm({ name: "", event_date: "", entry_type: "free", cover_image_url: "", description: "" });
     setShowForm(false);
-    load();
-  }
-
-  function startEditDescription(ev: EventRow) {
-    setEditingDescriptionId(ev.id);
-    setEditingDescriptionText(ev.description ?? "");
-  }
-
-  async function saveDescription(id: string) {
-    await supabase
-      .from("events")
-      .update({ description: editingDescriptionText.trim() || null })
-      .eq("id", id);
-    setEditingDescriptionId(null);
     load();
   }
 
@@ -89,6 +88,20 @@ export default function AdminEventsPage() {
   async function saveUploadedPoster(id: string, url: string) {
     await supabase.from("events").update({ cover_image_url: url }).eq("id", id);
     setEditingPosterId(null);
+    load();
+  }
+
+  function startEditDescription(ev: EventRow) {
+    setEditingDescriptionId(ev.id);
+    setEditingDescriptionText(ev.description ?? "");
+  }
+
+  async function saveDescription(id: string) {
+    await supabase
+      .from("events")
+      .update({ description: editingDescriptionText.trim() || null })
+      .eq("id", id);
+    setEditingDescriptionId(null);
     load();
   }
 

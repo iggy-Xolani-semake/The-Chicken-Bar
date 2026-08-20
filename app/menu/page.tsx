@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { getMenuItems } from "@/lib/supabase/queries";
 import type { MenuCategory, MenuItem } from "@/lib/supabase/types";
 import MenuItemCard from "@/app/components/MenuItemCard";
@@ -36,7 +36,7 @@ export default function FullMenuPage() {
         )}
 
         {!error &&
-          categories?.map((cat, idx) => {
+          categories?.map((cat) => {
             const items = itemsByCategory[cat.id] ?? [];
             if (items.length === 0) return null;
 
@@ -70,13 +70,14 @@ export default function FullMenuPage() {
                   </div>
 
                   {sectionPhoto && (
-                    <div className="relative hidden md:block md:w-1/3 h-64 shrink-0 mt-14">
+                    <div className="hidden md:block md:w-1/3 shrink-0 pt-14">
                       <Image
                         src={sectionPhoto.src}
                         alt={sectionPhoto.alt}
-                        fill
-                        sizes="33vw"
-                        className="object-cover rounded-sm shadow-lg"
+                        width={720}
+                        height={384}
+                        sizes="(min-width: 768px) 33vw, 100vw"
+                        className="w-full h-64 object-cover rounded-sm shadow-lg"
                       />
                     </div>
                   )}

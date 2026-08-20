@@ -84,14 +84,8 @@ export default function Hero() {
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center md:justify-start">
             <a
-              href="/checkout"
-              className="shine-on-hover font-body font-bold uppercase tracking-wide bg-flame px-8 py-3.5 text-lg text-bone shadow-[4px_4px_0_rgba(0,0,0,0.5)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_rgba(0,0,0,0.5)] focus-visible:outline focus-visible:outline-3 focus-visible:outline-char focus-visible:outline-offset-2"
-            >
-              Order Now
-            </a>
-            <a
               href="/menu"
-              className="font-body font-bold uppercase tracking-wide border-2 border-bone bg-transparent px-8 py-3.5 text-lg text-bone transition-colors hover:bg-bone hover:text-ink focus-visible:outline focus-visible:outline-3 focus-visible:outline-char focus-visible:outline-offset-2"
+              className="shine-on-hover font-body font-bold uppercase tracking-wide bg-flame px-8 py-3.5 text-lg text-bone shadow-[4px_4px_0_rgba(0,0,0,0.5)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_rgba(0,0,0,0.5)] focus-visible:outline focus-visible:outline-3 focus-visible:outline-char focus-visible:outline-offset-2"
             >
               View Menu
             </a>

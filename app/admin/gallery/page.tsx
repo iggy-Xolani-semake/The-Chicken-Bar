@@ -12,22 +12,35 @@ interface GalleryRow {
   caption: string | null;
 }
 
+async function fetchGalleryImages(): Promise<GalleryRow[]> {
+  const { data } = await supabase
+    .from("gallery_images")
+    .select("id, image_url, category, caption")
+    .order("display_order");
+
+  return (data as GalleryRow[]) ?? [];
+}
+
 export default function AdminGalleryPage() {
   const [images, setImages] = useState<GalleryRow[] | null>(null);
   const [newUrl, setNewUrl] = useState("");
   const [newCategory, setNewCategory] = useState("food");
 
   const load = useCallback(async () => {
-    const { data } = await supabase
-      .from("gallery_images")
-      .select("id, image_url, category, caption")
-      .order("display_order");
-    setImages((data as GalleryRow[]) ?? []);
+    setImages(await fetchGalleryImages());
   }, []);
 
   useEffect(() => {
-    load();
-  }, [load]);
+    let cancelled = false;
+
+    void fetchGalleryImages().then((data) => {
+      if (!cancelled) setImages(data);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   async function addImage(e: React.FormEvent) {
     e.preventDefault();

@@ -14,7 +14,7 @@ import CheckoutForm, { type CheckoutData } from "@/app/components/CheckoutForm";
 const DEFAULT_ORDERS_WHATSAPP = "0658012302";
 
 export default function CheckoutPage() {
-  const { lines, subtotal, dispatch } = useCart();
+  const { lines, dispatch } = useCart();
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [completedOrder, setCompletedOrder] = useState<SubmittedOrder | null>(null);

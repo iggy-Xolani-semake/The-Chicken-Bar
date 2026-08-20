@@ -71,9 +71,23 @@ export default function AdminStallsPage() {
   }, []);
 
   useEffect(() => {
-    loadBookings();
-    loadSettings();
-  }, [loadBookings, loadSettings]);
+    let cancelled = false;
+
+    void Promise.all([
+      supabase.from("stall_bookings").select("*").order("created_at", { ascending: false }),
+      supabase.from("stall_settings").select("*").order("booking_deadline", { ascending: true }),
+      supabase.from("events").select("id, name").eq("status", "upcoming").order("event_date"),
+    ]).then(([{ data: bookingRows }, { data: settingRows }, { data: eventRows }]) => {
+      if (cancelled) return;
+      setBookings((bookingRows as Booking[]) ?? []);
+      setStallSettings((settingRows as StallSetting[]) ?? []);
+      setEvents((eventRows as EventOption[]) ?? []);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   async function setStatus(id: string, status: Status) {
     await supabase.from("stall_bookings").update({ status }).eq("id", id);

@@ -24,15 +24,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const isLoginPage = pathname === "/admin/login";
 
   useEffect(() => {
-    if (isLoginPage) {
-      setChecking(false);
-      return;
-    }
-    getCurrentAdminStatus().then(({ isAdmin: ok }) => {
+    if (isLoginPage) return;
+
+    let cancelled = false;
+    void getCurrentAdminStatus().then(({ isAdmin: ok }) => {
+      if (cancelled) return;
       setIsAdmin(ok);
       setChecking(false);
-      if (!ok) router.push("/admin/login");
+      if (!ok) router.replace("/admin/login");
     });
+
+    return () => {
+      cancelled = true;
+    };
   }, [isLoginPage, router]);
 
   if (isLoginPage) return <>{children}</>;

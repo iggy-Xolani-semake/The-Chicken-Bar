@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import type { MenuItem } from "@/lib/supabase/types";
 import { useCart } from "@/lib/cart/CartContext";
-import type { ResolvedComboChoice, ResolvedAddon, CartLineItem } from "@/lib/cart/cartLogic";
+import type { ResolvedComboChoice, ResolvedAddon } from "@/lib/cart/cartLogic";
 import { lineItemTotal } from "@/lib/cart/cartLogic";
 import ComboSelector from "./ComboSelector";
 

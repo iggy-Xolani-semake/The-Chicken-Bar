@@ -41,15 +41,20 @@ export default function CheckoutForm({ onSubmit, submitting }: CheckoutFormProps
   // selected — no point querying settings for a collection order that
   // will never use it.
   useEffect(() => {
-    if (data.fulfillmentType !== "delivery") {
-      setDeliveryFee(null);
-      return;
-    }
-    supabase
+    if (data.fulfillmentType !== "delivery") return;
+
+    let cancelled = false;
+    void supabase
       .from("restaurant_settings")
       .select("delivery_fee")
       .single()
-      .then(({ data: row }) => setDeliveryFee(row?.delivery_fee ?? null));
+      .then(({ data: row }) => {
+        if (!cancelled) setDeliveryFee(row?.delivery_fee ?? null);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [data.fulfillmentType]);
 
   const displayTotal = subtotal + (deliveryFee ?? 0);
@@ -80,6 +85,11 @@ export default function CheckoutForm({ onSubmit, submitting }: CheckoutFormProps
 
   function update<K extends keyof CheckoutData>(key: K, value: CheckoutData[K]) {
     setData((prev) => ({ ...prev, [key]: value }));
+  }
+
+  function updateFulfillmentType(fulfillmentType: CheckoutData["fulfillmentType"]) {
+    update("fulfillmentType", fulfillmentType);
+    if (fulfillmentType === "collection") setDeliveryFee(null);
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -262,7 +272,7 @@ export default function CheckoutForm({ onSubmit, submitting }: CheckoutFormProps
                 name="fulfillmentType"
                 value={type}
                 checked={data.fulfillmentType === type}
-                onChange={() => update("fulfillmentType", type)}
+                onChange={() => updateFulfillmentType(type)}
                 className="sr-only"
               />
               {type}

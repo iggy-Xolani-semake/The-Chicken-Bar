@@ -18,7 +18,7 @@ export default function Footer() {
           </h4>
           <p className="font-body text-bone/60 text-sm mb-1">065 801 2302</p>
           <p className="font-body text-bone/60 text-sm mb-1">079 095 1258</p>
-          <p className="font-body text-bone/60 text-sm">info.thechickenbar@gmail.com</p>
+          <p className="font-body text-bone/60 text-sm">thechickenbarbj@gmail.com</p>
         </div>
 
         <div>

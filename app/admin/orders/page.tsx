@@ -33,22 +33,35 @@ const STATUS_FLOW: OrderStatus[] = [
   "completed",
 ];
 
+async function fetchOrders(): Promise<OrderRow[]> {
+  const { data } = await supabase
+    .from("orders")
+    .select(`*, order_items (item_name_snapshot, quantity)`)
+    .order("created_at", { ascending: false })
+    .limit(50);
+
+  return (data as OrderRow[]) ?? [];
+}
+
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<OrderRow[] | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const loadOrders = useCallback(async () => {
-    const { data } = await supabase
-      .from("orders")
-      .select(`*, order_items (item_name_snapshot, quantity)`)
-      .order("created_at", { ascending: false })
-      .limit(50);
-    setOrders((data as OrderRow[]) ?? []);
+    setOrders(await fetchOrders());
   }, []);
 
   useEffect(() => {
-    loadOrders();
-  }, [loadOrders]);
+    let cancelled = false;
+
+    void fetchOrders().then((data) => {
+      if (!cancelled) setOrders(data);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   async function updateStatus(orderId: string, status: OrderStatus) {
     await supabase.from("orders").update({ status }).eq("id", orderId);

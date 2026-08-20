@@ -40,7 +40,7 @@ export default function AdminMenuPage() {
   const [newCategoryName, setNewCategoryName] = useState("");
   const [categoryError, setCategoryError] = useState<string | null>(null);
 
-  const loadData = useCallback(async () => {
+  const fetchMenuData = useCallback(async () => {
     const { data: cats } = await supabase
       .from("menu_categories")
       .select("id, name, menu_type")
@@ -50,24 +50,51 @@ export default function AdminMenuPage() {
       .select("id, category_id, name, price, is_available, is_featured, is_todays_special, is_active, image_url")
       .order("display_order");
 
-    const allCats = (cats as Category[]) ?? [];
-    setCategories(allCats);
-    setItems((menuItems as Item[]) ?? []);
+    return { cats: (cats as Category[]) ?? [], menuItems: (menuItems as Item[]) ?? [] };
+  }, []);
 
-    // Only default activeCategoryId from categories that actually match
-    // the currently selected tab (main vs. Majita Monday) — otherwise
-    // the very first load could silently land on a majita_monday
-    // category while the tab bar shows "Main Menu" selected, which is
-    // exactly the mixed-up state this whole change is meant to fix.
-    const catsForActiveTab = allCats.filter((c) => c.menu_type === activeMenuType);
-    if (catsForActiveTab.length > 0 && !catsForActiveTab.some((c) => c.id === activeCategoryId)) {
-      setActiveCategoryId(catsForActiveTab[0].id);
-    }
-  }, [activeCategoryId, activeMenuType]);
+  const applyMenuData = useCallback(
+    (allCats: Category[], menuItems: Item[]) => {
+      setCategories(allCats);
+      setItems(menuItems);
+
+      // Only default activeCategoryId from categories that actually match
+      // the currently selected tab (main vs. Majita Monday) — otherwise
+      // the very first load could silently land on a majita_monday
+      // category while the tab bar shows "Main Menu" selected, which is
+      // exactly the mixed-up state this whole change is meant to fix.
+      const catsForActiveTab = allCats.filter((c) => c.menu_type === activeMenuType);
+      if (catsForActiveTab.length > 0 && !catsForActiveTab.some((c) => c.id === activeCategoryId)) {
+        setActiveCategoryId(catsForActiveTab[0].id);
+      }
+    },
+    [activeCategoryId, activeMenuType]
+  );
+
+  // Used by every button handler below (toggles, saves, creates) — these
+  // are user-initiated, not effect-driven, so calling setState directly
+  // here is the normal, correct pattern; only the mount/dependency-change
+  // fetch below needs the cancelled-flag guard.
+  const loadData = useCallback(async () => {
+    const { cats, menuItems } = await fetchMenuData();
+    applyMenuData(cats, menuItems);
+  }, [fetchMenuData, applyMenuData]);
 
   useEffect(() => {
-    loadData();
-  }, [loadData]);
+    let cancelled = false;
+    fetchMenuData().then(({ cats, menuItems }) => {
+      if (cancelled) return;
+      applyMenuData(cats, menuItems);
+    });
+    return () => {
+      cancelled = true;
+    };
+    // Intentionally omitting fetchMenuData/applyMenuData from deps — this
+    // effect should only re-run on mount, not every time activeMenuType
+    // changes tab selection recalculates applyMenuData's identity; the
+    // tab switch itself is handled by switchMenuType below, not a refetch.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const categoriesForActiveTab = categories.filter((c) => c.menu_type === activeMenuType);
 
