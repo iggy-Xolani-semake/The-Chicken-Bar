@@ -14,22 +14,34 @@ interface GalleryImage {
 
 const FALLBACK_IMAGES: GalleryImage[] = [
   {
-    id: "fallback-chicken",
-    image_url: "/gallery/chicken-quarters.jpg",
+    id: "fallback-flame-grilled-feast",
+    image_url: "/gallery/flame-grilled-feast.jpg",
     category: "food",
-    caption: "Flame-grilled chicken, straight from the fire",
+    caption: "A proper flame-grilled feast, built to share",
   },
   {
-    id: "fallback-takeaway",
-    image_url: "/gallery/takeaway-box.jpg",
+    id: "fallback-loaded-burger",
+    image_url: "/gallery/loaded-burger-and-fries.jpg",
     category: "food",
-    caption: "Packed and ready when the craving hits",
+    caption: "Loaded burger and seasoned fries",
   },
   {
-    id: "fallback-burger",
-    image_url: "/gallery/burger-plate.jpg",
+    id: "fallback-wrap-and-fries",
+    image_url: "/gallery/wrap-and-fries.jpg",
     category: "food",
-    caption: "Big flavour, proper portions",
+    caption: "Wraps, fries and big flavour",
+  },
+  {
+    id: "fallback-majita-full-spread",
+    image_url: "/gallery/majita-full-spread.jpg",
+    category: "food",
+    caption: "A Majita spread made for the crew",
+  },
+  {
+    id: "fallback-chicken-bar-trailer",
+    image_url: "/gallery/chicken-bar-trailer.jpg",
+    category: "vibe",
+    caption: "The Chicken Bar, ready to serve",
   },
 ];
 
@@ -117,7 +129,7 @@ export default function SocialGallery() {
 
             {usingFallback && (
               <p className="mt-4 font-body text-sm text-bone/55">
-                Fresh moments from The Chicken Bar — add more high-quality photos from Admin Gallery to keep this feed growing.
+                More flame, more flavour, more moments worth sharing.
               </p>
             )}
           </>
