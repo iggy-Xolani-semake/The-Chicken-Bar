@@ -1,4 +1,5 @@
 import Hero from "./components/Hero";
+import OrderShortcut from "./components/OrderShortcut";
 import TodaysSpecial from "./components/TodaysSpecial";
 import MajitaMonday from "./components/MajitaMonday";
 import UpcomingEvents from "./components/UpcomingEvents";
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <OrderShortcut />
       <TodaysSpecial />
       <MajitaMonday />
       <UpcomingEvents />

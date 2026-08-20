@@ -161,7 +161,7 @@ body {
    All visible imagery is loaded directly from /public/logo and /public/food.
    This is an interface animation, not generated or replacement artwork. */
 .chicken-cinematic-hero {
-  --hero-intro: 4.8s;
+  --hero-intro: 2.8s;
   background-color: #21130d;
   background-image:
     linear-gradient(112deg, rgba(25, 13, 8, 0.94) 0%, rgba(29, 16, 8, 0.68) 50%, rgba(20, 11, 7, 0.82) 100%),
@@ -313,7 +313,7 @@ body {
   69%, 100% { opacity: 1; transform: translateY(-50%) scale(1) rotate(0); }
 }
 @keyframes chicken-copy-reveal {
-  0%, 75% { opacity: 0; transform: translateY(1.5rem); }
+  0%, 48% { opacity: 0; transform: translateY(1.5rem); }
   100% { opacity: 1; transform: translateY(0); }
 }
 @keyframes chicken-hero-glow {
@@ -348,4 +348,27 @@ body {
   .chicken-hero-glow { display: none; }
   .chicken-hero-food-frame { opacity: 1; animation: none; }
   .chicken-hero-copy { opacity: 1; transform: none; animation: none; }
+}
+
+/* Customer header: retain the full desktop lock-up while reserving more of the
+   first mobile screen for food and the ordering path. */
+.chicken-site-header {
+  height: 76px;
+}
+
+.chicken-site-logo {
+  position: relative;
+  width: 220px;
+  height: 58px;
+}
+
+@media (min-width: 768px) {
+  .chicken-site-header {
+    height: 100px;
+  }
+
+  .chicken-site-logo {
+    width: 320px;
+    height: 82px;
+  }
 }

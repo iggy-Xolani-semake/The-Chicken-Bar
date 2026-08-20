@@ -17,8 +17,7 @@ export default function Header() {
 
   return (
     <header
-      className="sticky top-0 z-[100] bg-char-black/95 backdrop-blur-sm border-b border-bone/10 px-4 md:px-6"
-      style={{ height: "100px" }}
+      className="chicken-site-header sticky top-0 z-[100] bg-char-black/95 backdrop-blur-sm border-b border-bone/10 px-4 md:px-6"
     >
       <div className="max-w-6xl mx-auto h-full flex items-center justify-between">
         {/* Logo Link Container */}
@@ -31,13 +30,13 @@ export default function Header() {
               Tailwind size classes silently fail to compile in this
               specific file. Inline style cannot silently fail: what's
               written here is exactly what renders, guaranteed. */}
-          <div style={{ position: "relative", height: "82px", width: "320px" }}>
+          <div className="chicken-site-logo">
             <Image
               src="/logo/tcb-logo-white.png"
               alt="The Chicken Bar — home"
               fill
               priority
-              sizes="320px"
+              sizes="(max-width: 767px) 220px, 320px"
               style={{ objectFit: "contain", objectPosition: "left" }}
             />
           </div>
@@ -56,12 +55,10 @@ export default function Header() {
             </Link>
           ))}
           <a
-            href="https://wa.me/27658012302"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/menu"
             className="font-body font-semibold text-xs uppercase tracking-wide bg-flame text-bone px-4 py-2 rounded-sm hover:bg-ember transition-colors whitespace-nowrap focus-visible:outline focus-visible:outline-3 focus-visible:outline-char"
           >
-            Contact Us
+            Order Now
           </a>
         </nav>
 
@@ -91,12 +88,10 @@ export default function Header() {
             </Link>
           ))}
           <a
-            href="https://wa.me/27658012302"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/menu"
             className="font-body font-semibold text-xs uppercase tracking-wide bg-flame text-bone px-4 py-2 rounded-sm text-center mt-1"
           >
-            Contact Us
+            Order Now
           </a>
         </nav>
       )}

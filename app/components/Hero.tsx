@@ -80,20 +80,20 @@ export default function Hero() {
             GRILLED CHICKEN &amp; MEAT.
           </h1>
           <p className="mx-auto mt-5 max-w-lg font-body text-lg text-bone/85 md:mx-0 md:text-xl">
-            Fresh flame-grilled food, the real Chicken Bar way.
+            Flame-grilled food, real kasi flavour, and your next plate waiting.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center md:justify-start">
             <a
               href="/menu"
               className="shine-on-hover font-body font-bold uppercase tracking-wide bg-flame px-8 py-3.5 text-lg text-bone shadow-[4px_4px_0_rgba(0,0,0,0.5)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_rgba(0,0,0,0.5)] focus-visible:outline focus-visible:outline-3 focus-visible:outline-char focus-visible:outline-offset-2"
             >
-              View Menu
+              Order Now
             </a>
             <a
-              href="#upcoming-events"
+              href="#gallery"
               className="font-body font-bold uppercase tracking-wide border-2 border-char/90 bg-char/10 px-8 py-3.5 text-lg text-char transition-colors hover:bg-char hover:text-ink focus-visible:outline focus-visible:outline-3 focus-visible:outline-bone focus-visible:outline-offset-2"
             >
-              View Events
+              See The Vibe
             </a>
           </div>
         </div>

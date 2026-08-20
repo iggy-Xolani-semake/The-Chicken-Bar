@@ -64,13 +64,24 @@ export default function TodaysSpecial() {
   return (
     <section className="texture-wood texture-wood-todays-special texture-wood-overlay px-6 md:px-12 py-20 md:py-28 border-y-4 border-flame">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-12 text-center">
-          <p className="font-utility text-char text-sm tracking-[0.3em] uppercase mb-3">
-            On today
-          </p>
-          <h2 className="font-display text-bone text-5xl md:text-6xl">
-            {todaysSpecialLabel(resolvedMenuType)}
-          </h2>
+        <div className="mb-9 grid gap-4 text-center md:mb-12 md:grid-cols-[1fr_auto] md:items-end md:text-left">
+          <div>
+            <p className="font-utility text-char text-xs font-bold uppercase tracking-[0.3em]">
+              Hand-picked for today
+            </p>
+            <h2 className="mt-3 font-display text-bone text-4xl md:text-6xl">
+              {todaysSpecialLabel(resolvedMenuType)}
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl font-body text-lg text-bone/75 md:mx-0">
+              The plates the crew should not sleep on today.
+            </p>
+          </div>
+          <a
+            href="/menu"
+            className="inline-flex min-h-11 items-center justify-center border border-char px-4 py-2 font-body text-sm font-bold uppercase tracking-wide text-char transition-colors hover:bg-char hover:text-ink"
+          >
+            Browse all food
+          </a>
         </div>
 
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
