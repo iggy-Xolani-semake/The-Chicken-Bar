@@ -1,5 +1,64 @@
 import { supabase } from "./client";
 import type { MenuItem, MenuCategory, RestaurantEvent } from "./types";
+import {
+  DEFAULT_KOTA_BAR_HOURS,
+  type CartItemCategory,
+  type KotaBarHoursConfig,
+} from "@/lib/menuAvailability";
+
+export interface MenuAvailabilitySettings extends KotaBarHoursConfig {
+  kotaBarAddress: string;
+  kotaBarOpen: string;
+  kotaBarClose: string;
+}
+
+export async function getMenuAvailabilitySettings(): Promise<MenuAvailabilitySettings> {
+  const { data, error } = await supabase
+    .from("restaurant_settings")
+    .select(
+      "order_hours_mon_thu_open, order_hours_mon_thu_close, order_hours_fri_sun_open, order_hours_fri_sun_close, kota_bar_address, kota_bar_open, kota_bar_close, kota_order_open, kota_order_close"
+    )
+    .single();
+
+  if (error || !data) {
+    return {
+      ...DEFAULT_KOTA_BAR_HOURS,
+      kotaBarAddress: "",
+      kotaBarOpen: DEFAULT_KOTA_BAR_HOURS.kotaOrderOpen,
+      kotaBarClose: "19:00",
+    };
+  }
+
+  return {
+    monThuOpen: data.order_hours_mon_thu_open ?? DEFAULT_KOTA_BAR_HOURS.monThuOpen,
+    monThuClose: data.order_hours_mon_thu_close ?? DEFAULT_KOTA_BAR_HOURS.monThuClose,
+    friSunOpen: data.order_hours_fri_sun_open ?? DEFAULT_KOTA_BAR_HOURS.friSunOpen,
+    friSunClose: data.order_hours_fri_sun_close ?? DEFAULT_KOTA_BAR_HOURS.friSunClose,
+    kotaOrderOpen: data.kota_order_open ?? DEFAULT_KOTA_BAR_HOURS.kotaOrderOpen,
+    kotaOrderClose: data.kota_order_close ?? DEFAULT_KOTA_BAR_HOURS.kotaOrderClose,
+    kotaBarAddress: data.kota_bar_address ?? "",
+    kotaBarOpen: data.kota_bar_open ?? DEFAULT_KOTA_BAR_HOURS.kotaOrderOpen,
+    kotaBarClose: data.kota_bar_close ?? "19:00",
+  };
+}
+
+export async function getCartItemCategories(itemIds: string[]): Promise<Record<string, CartItemCategory>> {
+  if (itemIds.length === 0) return {};
+
+  const { data, error } = await supabase
+    .from("menu_items")
+    .select("id, menu_categories!inner(slug, menu_type)")
+    .in("id", itemIds);
+
+  if (error) throw new Error(`Failed to check cart item availability: ${error.message}`);
+
+  return Object.fromEntries(
+    (data ?? []).map((row) => {
+      const category = row.menu_categories as unknown as { slug: string; menu_type: "main" | "majita_monday" };
+      return [row.id as string, { slug: category.slug, menuType: category.menu_type }];
+    })
+  );
+}
 
 /**
  * Fetch all active menu items for a given menu_type ('main' or 'majita_monday'),

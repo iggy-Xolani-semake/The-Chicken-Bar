@@ -8,7 +8,13 @@ import type { ResolvedComboChoice, ResolvedAddon } from "@/lib/cart/cartLogic";
 import { lineItemTotal } from "@/lib/cart/cartLogic";
 import ComboSelector from "./ComboSelector";
 
-export default function MenuItemCard({ item }: { item: MenuItem }) {
+export default function MenuItemCard({
+  item,
+  unavailableLabel = "Out of Stock",
+}: {
+  item: MenuItem;
+  unavailableLabel?: string;
+}) {
   const { lines, dispatch } = useCart();
   const [selected, setSelected] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -114,13 +120,13 @@ export default function MenuItemCard({ item }: { item: MenuItem }) {
       } ${hasImage ? "flex flex-col" : "flex flex-wrap items-center justify-between gap-3 px-4 py-3"}`}
     >
       {hasImage && (
-        <div className="relative w-full h-40">
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-ink/70">
           <Image
             src={item.image_url as string}
             alt={item.name}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover"
+            className="object-contain"
           />
         </div>
       )}
@@ -137,7 +143,7 @@ export default function MenuItemCard({ item }: { item: MenuItem }) {
               <h3 className="font-body font-bold text-bone break-words">{item.name}</h3>
               {!item.is_available && (
                 <span className="font-utility text-[10px] uppercase text-bone/50 border border-bone/20 px-1.5 py-0.5 rounded-sm shrink-0">
-                  Out of Stock
+                  {unavailableLabel}
                 </span>
               )}
             </div>
@@ -275,7 +281,7 @@ export default function MenuItemCard({ item }: { item: MenuItem }) {
           </h3>
           {!item.is_available && (
             <span className="font-utility text-xs uppercase tracking-wide text-bone/50 border border-bone/20 px-2 py-1 rounded-sm shrink-0">
-              Out of Stock
+              {unavailableLabel}
             </span>
           )}
         </div>

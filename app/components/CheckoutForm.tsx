@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { useCart } from "@/lib/cart/CartContext";
 import { lineItemTotal } from "@/lib/cart/cartLogic";
-import { isOrderingOpen, getOrderingClosedMessage, DEFAULT_ORDER_HOURS } from "@/lib/orderHours";
+import { getCartItemCategories, getMenuAvailabilitySettings, type MenuAvailabilitySettings } from "@/lib/supabase/queries";
+import { getCartAvailability, type CartItemCategory } from "@/lib/menuAvailability";
 
 export interface CheckoutData {
   customerName: string;
@@ -36,6 +37,8 @@ export default function CheckoutForm({ onSubmit, submitting }: CheckoutFormProps
   const [data, setData] = useState<CheckoutData>(emptyCheckoutData);
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
   const [deliveryFee, setDeliveryFee] = useState<number | null>(null);
+  const [availabilitySettings, setAvailabilitySettings] = useState<MenuAvailabilitySettings | null>(null);
+  const [cartCategories, setCartCategories] = useState<Record<string, CartItemCategory> | null>(null);
 
   // Fetch the configured delivery fee only when delivery is actually
   // selected — no point querying settings for a collection order that
@@ -57,16 +60,41 @@ export default function CheckoutForm({ onSubmit, submitting }: CheckoutFormProps
     };
   }, [data.fulfillmentType]);
 
-  const displayTotal = subtotal + (deliveryFee ?? 0);
+  useEffect(() => {
+    let cancelled = false;
+    void getMenuAvailabilitySettings().then((settings) => {
+      if (!cancelled) setAvailabilitySettings(settings);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
-  // Order hours check evaluated at render time. Uses DEFAULT_ORDER_HOURS
-  // (the brief's stated hours) as a fallback — once restaurant_settings
-  // is wired into a shared settings context, this should read the live
-  // admin-configured hours instead. Flagging that here rather than
-  // silently hardcoding it as if it were final.
+  useEffect(() => {
+    let cancelled = false;
+    const itemIds = [...new Set(lines.map((line) => line.menuItemId))];
+
+    void getCartItemCategories(itemIds).then((categories) => {
+      if (!cancelled) setCartCategories(categories);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [lines]);
+
+  const displayTotal = subtotal + (deliveryFee ?? 0);
   const now = new Date();
-  const orderingOpen = isOrderingOpen(now, DEFAULT_ORDER_HOURS);
-  const closedMessage = getOrderingClosedMessage(now, DEFAULT_ORDER_HOURS);
+  const checkoutAvailability =
+    availabilitySettings && cartCategories
+      ? getCartAvailability(
+          now,
+          lines.map((line) => cartCategories[line.menuItemId]),
+          availabilitySettings
+        )
+      : { isOrderable: false, message: "Checking the availability of your order..." };
+  const orderingOpen = checkoutAvailability.isOrderable;
+  const closedMessage = checkoutAvailability.message ?? "Orders are currently unavailable.";
 
   // Validation — per brief: name required, phone required, at least one
   // item, delivery address required if delivery selected. Computed on

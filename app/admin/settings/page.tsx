@@ -16,6 +16,11 @@ interface Settings {
   order_hours_mon_thu_close: string;
   order_hours_fri_sun_open: string;
   order_hours_fri_sun_close: string;
+  kota_bar_address: string | null;
+  kota_bar_open: string;
+  kota_bar_close: string;
+  kota_order_open: string;
+  kota_order_close: string;
   facebook_url: string | null;
   car_wash_enabled: boolean;
   delivery_fee: number | null;
@@ -57,6 +62,11 @@ export default function AdminSettingsPage() {
         order_hours_mon_thu_close: settings.order_hours_mon_thu_close,
         order_hours_fri_sun_open: settings.order_hours_fri_sun_open,
         order_hours_fri_sun_close: settings.order_hours_fri_sun_close,
+        kota_bar_address: settings.kota_bar_address,
+        kota_bar_open: settings.kota_bar_open,
+        kota_bar_close: settings.kota_bar_close,
+        kota_order_open: settings.kota_order_open,
+        kota_order_close: settings.kota_order_close,
         facebook_url: settings.facebook_url,
         car_wash_enabled: settings.car_wash_enabled,
         delivery_fee: settings.delivery_fee,
@@ -140,6 +150,45 @@ export default function AdminSettingsPage() {
               label="Close"
               value={settings.order_hours_fri_sun_close}
               onChange={(v) => update("order_hours_fri_sun_close", v)}
+              type="time"
+            />
+          </div>
+        </section>
+
+        <section>
+          <h2 className="font-body font-bold text-bone mb-3">Kota Bar Location & Hours</h2>
+          <p className="font-body text-bone/50 text-sm mb-3">
+            The Kota Bar is a separate collection point. These hours control its public information and online Kota ordering window.
+          </p>
+          <Field
+            label="Kota Bar collection address"
+            value={settings.kota_bar_address ?? ""}
+            onChange={(v) => update("kota_bar_address", v || null)}
+            full
+          />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 mt-3">
+            <Field
+              label="Open to customers"
+              value={settings.kota_bar_open}
+              onChange={(v) => update("kota_bar_open", v)}
+              type="time"
+            />
+            <Field
+              label="Close to customers"
+              value={settings.kota_bar_close}
+              onChange={(v) => update("kota_bar_close", v)}
+              type="time"
+            />
+            <Field
+              label="Online Kota orders open"
+              value={settings.kota_order_open}
+              onChange={(v) => update("kota_order_open", v)}
+              type="time"
+            />
+            <Field
+              label="Online Kota orders close"
+              value={settings.kota_order_close}
+              onChange={(v) => update("kota_order_close", v)}
               type="time"
             />
           </div>
