@@ -118,19 +118,19 @@ export default function AdminEventsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="font-display text-bone text-3xl">Events</h1>
+      <div className="flex flex-col gap-3 mb-6 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="font-display text-bone text-2xl sm:text-3xl">Events</h1>
         <button
           type="button"
           onClick={() => setShowForm(!showForm)}
-          className="font-body text-sm bg-flame text-bone px-4 py-2 rounded-sm hover:bg-ember"
+          className="w-full min-h-11 font-body text-sm bg-flame text-bone px-4 py-2 rounded-sm hover:bg-ember sm:w-auto"
         >
           + Create Event
         </button>
       </div>
 
       {showForm && (
-        <form onSubmit={createEvent} className="bg-smoke-light border border-bone/10 rounded-sm p-4 mb-6 space-y-3">
+        <form onSubmit={createEvent} className="bg-smoke-light border border-bone/10 rounded-sm p-3 sm:p-4 mb-6 space-y-3">
           <input
             placeholder="Event name"
             value={form.name}
@@ -155,7 +155,7 @@ export default function AdminEventsPage() {
             <label className="block font-body text-xs text-bone/50 mb-1">
               Poster / cover image
             </label>
-            <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:flex-wrap">
               <input
                 placeholder="Paste a URL, or upload from device below"
                 value={form.cover_image_url}
@@ -191,7 +191,7 @@ export default function AdminEventsPage() {
         {events?.map((ev) => (
           <div
             key={ev.id}
-            className="bg-smoke-light border border-bone/10 rounded-sm p-4 flex items-start justify-between gap-4"
+            className="bg-smoke-light border border-bone/10 rounded-sm p-3 sm:p-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4"
           >
             <div className="flex items-start gap-3 flex-1 min-w-0">
               {ev.cover_image_url ? (
@@ -213,17 +213,17 @@ export default function AdminEventsPage() {
                 </p>
 
                 {editingPosterId === ev.id ? (
-                  <div className="flex items-center gap-2 flex-wrap">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:flex-wrap">
                     <input
                       placeholder="https://..."
                       value={editingPosterUrl}
                       onChange={(e) => setEditingPosterUrl(e.target.value)}
-                      className="bg-smoke border border-bone/20 rounded-sm px-2 py-1 text-bone text-sm flex-1 min-w-[180px]"
+                      className="w-full bg-smoke border border-bone/20 rounded-sm px-2 py-2 text-bone text-sm sm:flex-1"
                     />
                     <button
                       type="button"
                       onClick={() => savePoster(ev.id)}
-                      className="font-body text-xs uppercase px-2 py-1 rounded-sm bg-flame text-bone"
+                      className="min-h-10 font-body text-xs uppercase px-2 py-1 rounded-sm bg-flame text-bone"
                     >
                       Save
                     </button>
@@ -244,7 +244,7 @@ export default function AdminEventsPage() {
                   <button
                     type="button"
                     onClick={() => startEditPoster(ev)}
-                    className="font-body text-xs uppercase px-2 py-1 rounded-sm bg-smoke border border-bone/20 text-bone/70"
+                    className="min-h-10 font-body text-xs uppercase px-2 py-1 rounded-sm bg-smoke border border-bone/20 text-bone/70"
                   >
                     {ev.cover_image_url ? "Change Poster" : "+ Add Poster"}
                   </button>
@@ -263,7 +263,7 @@ export default function AdminEventsPage() {
                         <button
                           type="button"
                           onClick={() => saveDescription(ev.id)}
-                          className="font-body text-xs uppercase px-2 py-1 rounded-sm bg-flame text-bone"
+                          className="min-h-10 font-body text-xs uppercase px-2 py-1 rounded-sm bg-flame text-bone"
                         >
                           Save
                         </button>
@@ -284,7 +284,7 @@ export default function AdminEventsPage() {
                       <button
                         type="button"
                         onClick={() => startEditDescription(ev)}
-                        className="font-body text-xs uppercase px-2 py-1 rounded-sm bg-smoke border border-bone/20 text-bone/70 shrink-0"
+                        className="min-h-10 font-body text-xs uppercase px-2 py-1 rounded-sm bg-smoke border border-bone/20 text-bone/70 shrink-0"
                       >
                         {ev.description ? "Edit Info" : "+ Add Info"}
                       </button>
@@ -294,18 +294,18 @@ export default function AdminEventsPage() {
               </div>
             </div>
 
-            <div className="flex gap-2 shrink-0">
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:shrink-0">
               <button
                 type="button"
                 onClick={() => toggleStatus(ev.id, ev.status)}
-                className="font-body text-xs uppercase px-2 py-1 rounded-sm bg-smoke border border-bone/20 text-bone/60"
+                className="min-h-10 font-body text-xs uppercase px-2 py-1 rounded-sm bg-smoke border border-bone/20 text-bone/60"
               >
                 {ev.status === "upcoming" ? "Mark Past" : "Mark Upcoming"}
               </button>
               <button
                 type="button"
                 onClick={() => deleteEvent(ev.id)}
-                className="font-body text-xs uppercase px-2 py-1 rounded-sm bg-smoke border border-ember/40 text-ember"
+                className="min-h-10 font-body text-xs uppercase px-2 py-1 rounded-sm bg-smoke border border-ember/40 text-ember"
               >
                 Delete
               </button>

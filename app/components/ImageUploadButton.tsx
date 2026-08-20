@@ -65,7 +65,7 @@ export default function ImageUploadButton({
       <label
         htmlFor={`upload-${folder}-${label}`}
         className={cn(
-          "inline-block cursor-pointer font-body text-xs uppercase px-3 py-2 rounded-sm bg-flame text-bone hover:bg-ember transition-colors",
+          "inline-flex min-h-11 items-center justify-center cursor-pointer font-body text-xs uppercase px-3 py-2 rounded-sm bg-flame text-bone hover:bg-ember transition-colors",
           uploading && "opacity-50 pointer-events-none",
           className
         )}

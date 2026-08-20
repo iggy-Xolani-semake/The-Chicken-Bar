@@ -126,13 +126,13 @@ export default function AdminStallsPage() {
 
   return (
     <div>
-      <h1 className="font-display text-bone text-3xl mb-6">Stalls</h1>
+      <h1 className="font-display text-bone text-2xl sm:text-3xl mb-6">Stalls</h1>
 
-      <div className="flex gap-2 mb-6">
+      <div className="grid grid-cols-2 gap-2 mb-6">
         <button
           type="button"
           onClick={() => setTab("applications")}
-          className={`font-body text-sm px-4 py-2 rounded-sm ${
+          className={`min-h-11 w-full font-body text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-sm ${
             tab === "applications" ? "bg-flame text-bone" : "bg-smoke-light text-bone/60"
           }`}
         >
@@ -141,7 +141,7 @@ export default function AdminStallsPage() {
         <button
           type="button"
           onClick={() => setTab("settings")}
-          className={`font-body text-sm px-4 py-2 rounded-sm ${
+          className={`min-h-11 w-full font-body text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-sm ${
             tab === "settings" ? "bg-flame text-bone" : "bg-smoke-light text-bone/60"
           }`}
         >
@@ -157,7 +157,7 @@ export default function AdminStallsPage() {
           )}
           <div className="space-y-3">
             {bookings?.map((b) => (
-              <div key={b.id} className="bg-smoke-light border border-bone/10 rounded-sm p-4">
+              <div key={b.id} className="bg-smoke-light border border-bone/10 rounded-sm p-3 sm:p-4">
                 <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
                   <div>
                     <p className="font-body text-bone">{b.full_name}</p>
@@ -165,18 +165,18 @@ export default function AdminStallsPage() {
                       {b.business_name ?? "—"} · {b.whatsapp_number}
                     </p>
                   </div>
-                  <span className="font-body text-xs uppercase px-2 py-1 rounded-sm bg-bone/10 text-bone/70">
+                  <span className="min-h-10 font-body text-[11px] uppercase px-2 py-1 rounded-sm bg-bone/10 text-bone/70">
                     {b.status}
                   </span>
                 </div>
-                <div className="flex gap-2 flex-wrap">
+                <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
                   {STATUSES.map((s) => (
                     <button
                       key={s}
                       type="button"
                       onClick={() => setStatus(b.id, s)}
                       disabled={b.status === s}
-                      className="font-body text-xs uppercase px-2 py-1 rounded-sm bg-smoke border border-bone/20 text-bone/60 hover:border-flame disabled:opacity-30"
+                      className="min-h-10 font-body text-[11px] uppercase px-2 py-1 rounded-sm bg-smoke border border-bone/20 text-bone/60 hover:border-flame disabled:opacity-30"
                     >
                       {s}
                     </button>
@@ -193,7 +193,7 @@ export default function AdminStallsPage() {
           <button
             type="button"
             onClick={() => setShowAddForm(!showAddForm)}
-            className="font-body text-sm bg-flame text-bone px-4 py-2 rounded-sm hover:bg-ember mb-4"
+            className="w-full min-h-11 font-body text-sm bg-flame text-bone px-4 py-2 rounded-sm hover:bg-ember mb-4 sm:w-auto"
           >
             {showAddForm ? "Cancel" : "+ Add Stall Type"}
           </button>
@@ -201,7 +201,7 @@ export default function AdminStallsPage() {
           {showAddForm && (
             <form
               onSubmit={addStallSetting}
-              className="bg-smoke-light border border-bone/10 rounded-sm p-4 mb-6 space-y-3"
+              className="bg-smoke-light border border-bone/10 rounded-sm p-3 sm:p-4 mb-6 space-y-3"
             >
               <select
                 value={newSetting.event_id}
@@ -255,7 +255,7 @@ export default function AdminStallsPage() {
             {stallSettings?.map((s) => (
               <div
                 key={s.id}
-                className={`bg-smoke-light border border-bone/10 rounded-sm p-4 flex items-center justify-between ${
+                className={`bg-smoke-light border border-bone/10 rounded-sm p-3 sm:p-4 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between ${
                   !s.is_active ? "opacity-40" : ""
                 }`}
               >
@@ -266,18 +266,18 @@ export default function AdminStallsPage() {
                     {s.booking_deadline && ` · Deadline: ${s.booking_deadline}`}
                   </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="grid grid-cols-2 gap-2 sm:flex">
                   <button
                     type="button"
                     onClick={() => toggleSettingActive(s)}
-                    className="font-body text-xs uppercase px-2 py-1 rounded-sm bg-smoke border border-bone/20 text-bone/70"
+                    className="min-h-10 font-body text-[11px] uppercase px-2 py-1 rounded-sm bg-smoke border border-bone/20 text-bone/70"
                   >
                     {s.is_active ? "Deactivate" : "Activate"}
                   </button>
                   <button
                     type="button"
                     onClick={() => deleteSetting(s.id)}
-                    className="font-body text-xs uppercase px-2 py-1 rounded-sm bg-smoke border border-ember/40 text-ember"
+                    className="min-h-10 font-body text-[11px] uppercase px-2 py-1 rounded-sm bg-smoke border border-ember/40 text-ember"
                   >
                     Delete
                   </button>

@@ -70,7 +70,7 @@ export default function AdminOrdersPage() {
 
   return (
     <div>
-      <h1 className="font-display text-bone text-3xl mb-8">Orders</h1>
+      <h1 className="font-display text-bone text-2xl sm:text-3xl mb-6 sm:mb-8">Orders</h1>
 
       {orders === null && <p className="font-body text-bone/50">Loading...</p>}
       {orders !== null && orders.length === 0 && (
@@ -79,16 +79,16 @@ export default function AdminOrdersPage() {
 
       <div className="space-y-3">
         {orders?.map((order) => (
-          <div key={order.id} className="bg-smoke-light border border-bone/10 rounded-sm p-4">
-            <div className="flex items-center justify-between flex-wrap gap-2">
-              <div>
+          <div key={order.id} className="bg-smoke-light border border-bone/10 rounded-sm p-3 sm:p-4">
+            <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0">
                 <span className="font-utility text-flame font-bold">{order.order_number}</span>
-                <span className="font-body text-bone/70 ml-3">{order.customer_name}</span>
-                <span className="font-body text-bone/40 text-sm ml-3">
+                <span className="block mt-1 font-body text-bone/70 sm:mt-0 sm:ml-3 sm:inline">{order.customer_name}</span>
+                <span className="block mt-1 font-body text-bone/40 text-sm sm:mt-0 sm:ml-3 sm:inline">
                   {order.order_fulfillment_type}
                 </span>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center justify-between gap-3 sm:justify-end">
                 <span className="font-utility text-bone">R{order.total}</span>
                 <span
                   className={`font-body text-xs uppercase px-2 py-1 rounded-sm ${
@@ -104,7 +104,7 @@ export default function AdminOrdersPage() {
                 <button
                   type="button"
                   onClick={() => setExpandedId(expandedId === order.id ? null : order.id)}
-                  className="font-body text-sm text-bone/50 hover:text-bone"
+                  className="min-h-10 px-2 font-body text-sm text-bone/50 hover:text-bone"
                 >
                   {expandedId === order.id ? "Hide" : "View"}
                 </button>
@@ -124,14 +124,14 @@ export default function AdminOrdersPage() {
                   ))}
                 </ul>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
                   {STATUS_FLOW.map((s) => (
                     <button
                       key={s}
                       type="button"
                       onClick={() => updateStatus(order.id, s)}
                       disabled={order.status === s}
-                      className="font-body text-xs uppercase px-3 py-1.5 rounded-sm bg-smoke border border-bone/20 text-bone/70 hover:border-flame disabled:opacity-30 disabled:cursor-not-allowed"
+                      className="min-h-10 font-body text-[11px] uppercase px-2 py-1.5 rounded-sm bg-smoke border border-bone/20 text-bone/70 hover:border-flame disabled:opacity-30 disabled:cursor-not-allowed"
                     >
                       Mark {s.replace(/_/g, " ")}
                     </button>
@@ -139,14 +139,14 @@ export default function AdminOrdersPage() {
                   <button
                     type="button"
                     onClick={() => updateStatus(order.id, "cancelled")}
-                    className="font-body text-xs uppercase px-3 py-1.5 rounded-sm bg-smoke border border-ember/40 text-ember hover:bg-ember/10"
+                    className="min-h-10 font-body text-[11px] uppercase px-2 py-1.5 rounded-sm bg-smoke border border-ember/40 text-ember hover:bg-ember/10"
                   >
                     Cancel Order
                   </button>
                   <button
                     type="button"
                     onClick={() => window.print()}
-                    className="font-body text-xs uppercase px-3 py-1.5 rounded-sm bg-smoke border border-bone/20 text-bone/70 hover:border-bone/50"
+                    className="min-h-10 font-body text-[11px] uppercase px-2 py-1.5 rounded-sm bg-smoke border border-bone/20 text-bone/70 hover:border-bone/50"
                   >
                     Print Order
                   </button>

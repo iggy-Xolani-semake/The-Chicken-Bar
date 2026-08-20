@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { CartProvider } from "@/lib/cart/CartContext";
-import CartDrawer from "@/app/components/CartDrawer";
-import Header from "@/app/components/Header";
-import MobileBottomNav from "@/app/components/MobileBottomNav";
+import SiteChrome from "@/app/components/SiteChrome";
 import "./globals.css";
 
 // Fonts are self-hosted (not next/font/google) — no runtime dependency on
@@ -96,12 +93,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col">
-        <CartProvider>
-          <Header />
-          <div className="flex-1 flex flex-col pb-16 md:pb-0">{children}</div>
-          <MobileBottomNav />
-          <CartDrawer />
-        </CartProvider>
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

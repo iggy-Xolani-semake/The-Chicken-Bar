@@ -70,13 +70,13 @@ export default function AdminSettingsPage() {
   if (!settings) return <p className="font-body text-bone/50">Loading...</p>;
 
   return (
-    <div className="max-w-2xl">
-      <h1 className="font-display text-bone text-3xl mb-8">Restaurant Settings</h1>
+    <div className="max-w-2xl w-full">
+      <h1 className="font-display text-bone text-2xl sm:text-3xl mb-6 sm:mb-8">Restaurant Settings</h1>
 
       <div className="space-y-6">
         <section>
           <h2 className="font-body font-bold text-bone mb-3">Contact</h2>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Field label="Phone 1" value={settings.phone_primary} onChange={(v) => update("phone_primary", v)} />
             <Field label="Phone 2" value={settings.phone_secondary} onChange={(v) => update("phone_secondary", v)} />
             <Field label="Email" value={settings.email} onChange={(v) => update("email", v)} full />
@@ -114,7 +114,7 @@ export default function AdminSettingsPage() {
         <section>
           <h2 className="font-body font-bold text-bone mb-3">Order Hours</h2>
           <p className="font-body text-bone/50 text-sm mb-3">Monday - Thursday</p>
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 mb-4">
             <Field
               label="Open"
               value={settings.order_hours_mon_thu_open}
@@ -129,7 +129,7 @@ export default function AdminSettingsPage() {
             />
           </div>
           <p className="font-body text-bone/50 text-sm mb-3">Friday - Sunday</p>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Field
               label="Open"
               value={settings.order_hours_fri_sun_open}
@@ -157,7 +157,7 @@ export default function AdminSettingsPage() {
               update("delivery_fee", e.target.value === "" ? null : parseFloat(e.target.value))
             }
             placeholder="e.g. 30"
-            className="w-full bg-smoke border border-bone/20 rounded-sm px-3 py-2 text-bone text-sm max-w-xs"
+            className="w-full bg-smoke border border-bone/20 rounded-sm px-3 py-2 text-bone text-sm sm:max-w-xs"
           />
         </section>
 
@@ -190,7 +190,7 @@ export default function AdminSettingsPage() {
                 e.target.value === "auto" ? null : (e.target.value as "main" | "majita_monday")
               )
             }
-            className="w-full bg-smoke border border-bone/20 rounded-sm px-3 py-2 text-bone text-sm max-w-xs"
+            className="w-full bg-smoke border border-bone/20 rounded-sm px-3 py-2 text-bone text-sm sm:max-w-xs"
           >
             <option value="auto">Auto (Majita Monday on Mondays only)</option>
             <option value="majita_monday">Force: Majita Monday menu</option>
@@ -202,7 +202,7 @@ export default function AdminSettingsPage() {
           type="button"
           onClick={save}
           disabled={saving}
-          className="font-body font-bold uppercase tracking-wide bg-flame text-bone px-6 py-3 rounded-sm hover:bg-ember disabled:opacity-50"
+          className="w-full min-h-12 font-body font-bold uppercase tracking-wide bg-flame text-bone px-6 py-3 rounded-sm hover:bg-ember disabled:opacity-50 sm:w-auto"
         >
           {saving ? "Saving..." : saved ? "Saved" : "Save Changes"}
         </button>
@@ -225,7 +225,7 @@ function Field({
   type?: string;
 }) {
   return (
-    <div className={full ? "col-span-2" : ""}>
+    <div className={full ? "sm:col-span-2" : ""}>
       <label className="block font-body text-xs text-bone/50 mb-1">{label}</label>
       <input
         type={type}

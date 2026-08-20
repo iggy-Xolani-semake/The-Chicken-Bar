@@ -62,9 +62,9 @@ export default function AdminGalleryPage() {
 
   return (
     <div>
-      <h1 className="font-display text-bone text-3xl mb-6">Gallery</h1>
+      <h1 className="font-display text-bone text-2xl sm:text-3xl mb-6">Gallery</h1>
 
-      <div className="flex gap-2 mb-6 flex-wrap items-start">
+      <div className="flex flex-col gap-3 mb-6 sm:flex-row sm:flex-wrap sm:items-start">
         <select
           value={newCategory}
           onChange={(e) => setNewCategory(e.target.value)}
@@ -79,7 +79,7 @@ export default function AdminGalleryPage() {
         <ImageUploadButton folder="gallery" onUploaded={addUploadedImage} label="Upload From Device" />
       </div>
 
-      <form onSubmit={addImage} className="flex gap-2 mb-6 flex-wrap items-center">
+      <form onSubmit={addImage} className="flex flex-col gap-2 mb-6 sm:flex-row sm:flex-wrap sm:items-center">
         <p className="font-body text-bone/40 text-xs w-full">
           Or paste a URL directly (e.g. if the image is already hosted elsewhere):
         </p>
@@ -87,21 +87,21 @@ export default function AdminGalleryPage() {
           placeholder="Image URL"
           value={newUrl}
           onChange={(e) => setNewUrl(e.target.value)}
-          className="bg-smoke border border-bone/20 rounded-sm px-3 py-2 text-bone flex-1 min-w-[200px]"
+          className="w-full bg-smoke border border-bone/20 rounded-sm px-3 py-2 text-bone sm:flex-1"
         />
-        <button type="submit" className="font-body text-sm bg-smoke border border-bone/20 text-bone/70 px-4 py-2 rounded-sm">
+        <button type="submit" className="w-full min-h-11 font-body text-sm bg-smoke border border-bone/20 text-bone/70 px-4 py-2 rounded-sm sm:w-auto">
           Add URL
         </button>
       </form>
 
-      <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
         {images?.map((img) => (
           <div key={img.id} className="relative group aspect-square">
             <Image src={img.image_url} alt="" fill sizes="150px" className="object-cover rounded-sm" />
             <button
               type="button"
               onClick={() => deleteImage(img.id)}
-              className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-bone text-sm transition-opacity"
+              className="absolute right-2 top-2 min-h-10 rounded-sm bg-black/75 px-3 opacity-100 flex items-center justify-center text-bone text-xs transition-opacity sm:inset-0 sm:right-auto sm:top-auto sm:rounded-none sm:bg-black/60 sm:px-0 sm:text-sm sm:opacity-0 sm:group-hover:opacity-100"
             >
               Delete
             </button>
